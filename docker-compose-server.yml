@@ -57,9 +57,9 @@ volumes:
 
 services:
 
-### Workspace Utilities ##################################
+### consumptive mats management Workspace Utilities ##################################
     workspace:
-      # image: 172.22.255.22:5000/consumeMat_workspace:latest
+      image: laradock_workspace:latest
       build:
         context: ./workspace
         args:
@@ -207,7 +207,7 @@ services:
 
 ### SMT Workspace Utilities ##################################
     smt_workspace:
-      # image: 172.22.255.22:5000/smtdocker_workspace:latest
+      image: laradock_smt_workspace:latest
       build:
         context: ./smt_workspace
         args:
@@ -352,7 +352,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
-      # image: 172.22.255.22:5000/laradock_php-fpm:latest
+      image: laradock_php-fpm:latest
       build:
         context: ./php-fpm
         args:
@@ -562,7 +562,7 @@ services:
 
 ### NGINX Server #########################################
     nginx:
-      # image: 172.22.255.22:5000/laradock_nginx:latest
+      image: laradock_nginx:latest
       build:
         context: ./nginx
         args:
@@ -680,7 +680,7 @@ services:
 
 ### MySQL ################################################
     mysql:
-      # image: 172.22.255.22:5000/laradock_mysql:latest
+      image: laradock_mysql:latest
       build:
         context: ./mysql
         args:
@@ -719,6 +719,7 @@ services:
 
 ### MSSQL ################################################
     mssql:
+      image: laradock_mssql:latest
       build:
         context: ./mssql
       environment:
@@ -728,7 +729,7 @@ services:
         - SA_PASSWORD=${MSSQL_PASSWORD}
         - ACCEPT_EULA=Y
       volumes:
-        - mssql:/var/opt/mssql
+        - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
       ports:
         - "${MSSQL_PORT}:1433"
       networks:
@@ -889,7 +890,7 @@ services:
 
   ### Redis ################################################
     redis:
-      # image: 172.22.255.22:5000/laradock_redis:latest
+      image: laradock_redis:latest
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
@@ -1689,7 +1690,6 @@ services:
 
 ### Docker-in-Docker ################################################
     docker-in-docker:
-      # image: 172.22.255.22:5000/docker_in_docker:latest
       image: docker:20.10-dind
       environment:
         DOCKER_TLS_SAN: DNS:docker-in-docker

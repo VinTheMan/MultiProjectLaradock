@@ -16,7 +16,6 @@ env:
     - PHP_VERSION=7.3 BUILD_SERVICE=php-worker
     - PHP_VERSION=7.4 BUILD_SERVICE=php-worker
     - PHP_VERSION=8.0 BUILD_SERVICE=php-worker
-    - PHP_VERSION=8.1 BUILD_SERVICE=php-worker
 
     - PHP_VERSION=7.0 BUILD_SERVICE=laravel-horizon
     - PHP_VERSION=7.1 BUILD_SERVICE=laravel-horizon
@@ -24,7 +23,6 @@ env:
     - PHP_VERSION=7.3 BUILD_SERVICE=laravel-horizon
     - PHP_VERSION=7.4 BUILD_SERVICE=laravel-horizon
     - PHP_VERSION=8.0 BUILD_SERVICE=laravel-horizon
-    - PHP_VERSION=8.1 BUILD_SERVICE=laravel-horizon
 
     - PHP_VERSION=NA BUILD_SERVICE=solr
     - PHP_VERSION=NA BUILD_SERVICE="mssql rethinkdb aerospike"
