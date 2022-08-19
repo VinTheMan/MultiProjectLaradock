@@ -23,6 +23,11 @@ ARG LARADOCK_PHP_VERSION
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
 
+# Set Time Zone
+ARG TZ=Asia/Taipei
+ENV TZ ${TZ}
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # If you're in China, or you need to change sources, will be set CHANGE_SOURCE to true in .env.
 
 ARG CHANGE_SOURCE=false
@@ -36,11 +41,28 @@ RUN if [ ${CHANGE_SOURCE} = true ]; then \
 # always run apt update when start and after add new source list, then clean up at end.
 RUN set -xe; \
     apt-get update -yqq && \
+    apt-get upgrade -yqq && \
     pecl channel-update pecl.php.net && \
     apt-get install -yqq \
       apt-utils \
+      curl \
+      libmemcached-dev \
+      libz-dev \
+      libpq-dev \
       gnupg2 \
       git \
+      libfreetype6-dev \
+		  libpng-dev \
+		  libjpeg-dev \
+      libxslt1-dev \
+      libssl-dev \
+      libwebp-dev \
+      libmcrypt-dev \
+      libxml2-dev \
+      libonig-dev \
+      libcurl4-openssl-dev \
+      vim \
+      nano \
       #
       #--------------------------------------------------------------------------
       # Mandatory Software's Installation
@@ -53,14 +75,59 @@ RUN set -xe; \
       #
       # next lines are here becase there is no auto build on dockerhub see https://github.com/laradock/laradock/pull/1903#issuecomment-463142846
       libzip-dev zip unzip && \
+      # Clear cache
+      apt-get clean && rm -rf /var/lib/apt/lists/* && \
       if [ ${LARADOCK_PHP_VERSION} = "7.3" ] || [ ${LARADOCK_PHP_VERSION} = "7.4" ] || [ $(php -r "echo PHP_MAJOR_VERSION;") = "8" ]; then \
         docker-php-ext-configure zip; \
       else \
         docker-php-ext-configure zip --with-libzip; \
       fi && \
+      docker-php-ext-configure gd \
+		  --enable-gd --with-freetype --with-jpeg --with-webp; \
+	    docker-php-ext-install -j$(nproc) gd && \
+      docker-php-ext-enable gd \
+	    && apt-get purge -y \
+		  libfreetype6-dev \
+		  libpng-dev \
+		  libjpeg-dev \
+      && \
       # Install the zip extension
       docker-php-ext-install zip && \
-      php -m | grep -q 'zip'
+      php -m | grep -q 'zip' && \
+      # Install mbstring extension
+      docker-php-ext-install mbstring && \
+      php -m | grep -q 'mbstring' && \
+      # Install xml extension
+      docker-php-ext-install xml && \
+      php -m | grep -q 'xml' && \
+      # Install xsl extension
+      docker-php-ext-install xsl && \
+      php -m | grep -q 'xsl' && \
+      # Install curl extension
+      docker-php-ext-install curl && \
+      php -m | grep -q 'curl'
+
+RUN docker-php-ext-configure opcache --enable-opcache \
+    && docker-php-ext-install opcache
+
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
+RUN set -ex; \
+        docker-php-source extract; \
+        { \
+                echo '# https://github.com/docker-library/php/issues/103#issuecomment-271413933'; \
+                echo 'AC_DEFUN([PHP_ALWAYS_SHARED],[])dnl'; \
+                echo; \
+                cat /usr/src/php/ext/odbc/config.m4; \
+        } > temp.m4; \
+        mv temp.m4 /usr/src/php/ext/odbc/config.m4; \
+        apt-get update; \
+        apt-get install -y --no-install-recommends unixodbc-dev; \
+        docker-php-ext-configure odbc --with-unixODBC=shared,/usr; \
+        docker-php-ext-install odbc; \
+        docker-php-source delete; \
+        apt-get purge -y --auto-remove
 
 #
 #--------------------------------------------------------------------------

@@ -4,12 +4,9 @@ on:
   push:
     branches: '**'
     tags: '**'
-    paths-ignore:
-      - '.github/workflows/build-deploy-docs.yml'
-      - 'DOCUMENTATION/**'
   pull_request:
   schedule:
-    - cron: '0 0 * * 0'
+  - cron: '0 0 * * 0'
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -61,7 +58,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        service: [ 'nginx', 'redis', 'mysql', 'mariadb', 'percona', 'minio', 'mongo' ]
+        service: ['nginx', 'redis', 'mysql', 'mariadb', 'percona', 'minio', 'mongo']
     steps:
       - uses: actions/checkout@v4
       - name: Build the Docker image
