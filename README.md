@@ -23,3 +23,8 @@ cp docker-compose-server.yml /home/it/PEGA_Projects/MultiProjectLaradock/docker-
 docker compose up nginx workspace smt_workspace redis mssql <br />
 docker compose up -d nginx workspace smt_workspace redis mssql <br />
 
+## Syncing a forked project (update to the newest laradock)
+
+git remote add upstream https://github.com/laradock/laradock.git
+git fetch upstream
+git rebase upstream/master
