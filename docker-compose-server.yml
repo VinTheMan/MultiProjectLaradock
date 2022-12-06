@@ -57,7 +57,7 @@ volumes:
 
 services:
 
-### consumptive mats management Workspace Utilities ##################################
+### Workspace Utilities ##################################
     workspace:
       image: laradock_workspace:latest
       build:
@@ -75,6 +75,7 @@ services:
           - INSTALL_GMP=${WORKSPACE_INSTALL_GMP}
           - INSTALL_GNUPG=${WORKSPACE_INSTALL_GNUPG}
           - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
+          - XDEBUG_PORT=${WORKSPACE_XDEBUG_PORT}
           - INSTALL_PCOV=${WORKSPACE_INSTALL_PCOV}
           - INSTALL_PHPDBG=${WORKSPACE_INSTALL_PHPDBG}
           - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
@@ -175,6 +176,7 @@ services:
           - INSTALL_DOCKER_CLIENT=${WORKSPACE_INSTALL_DOCKER_CLIENT}
           - INSTALL_MEMCACHED=${WORKSPACE_INSTALL_MEMCACHED}
           - INSTALL_EVENT=${WORKSPACE_INSTALL_EVENT}
+          - INSTALL_DNSUTILS=${WORKSPACE_INSTALL_DNSUTILS}
           - http_proxy
           - https_proxy
           - no_proxy
@@ -191,6 +193,7 @@ services:
         - "${WORKSPACE_VUE_CLI_SERVE_HOST_PORT}:8080"
         - "${WORKSPACE_VUE_CLI_UI_HOST_PORT}:8000"
         - "${WORKSPACE_ANGULAR_CLI_SERVE_HOST_PORT}:4200"
+        - "${WORKSPACE_VITE_PORT}:5173"
       tty: true
       environment:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
@@ -365,6 +368,7 @@ services:
           - INSTALL_GMP=${PHP_FPM_INSTALL_GMP}
           - INSTALL_GNUPG=${PHP_FPM_INSTALL_GNUPG}
           - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
+          - XDEBUG_PORT=${PHP_FPM_XDEBUG_PORT}
           - INSTALL_PCOV=${PHP_FPM_INSTALL_PCOV}
           - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
           - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
@@ -434,6 +438,7 @@ services:
           - PHP_FPM_NEW_RELIC_KEY=${PHP_FPM_NEW_RELIC_KEY}
           - PHP_FPM_NEW_RELIC_APP_NAME=${PHP_FPM_NEW_RELIC_APP_NAME}
           - INSTALL_DOCKER_CLIENT=${PHP_FPM_INSTALL_DOCKER_CLIENT}
+          - INSTALL_DNSUTILS=${PHP_FPM_INSTALL_DNSUTILS}
           - http_proxy
           - https_proxy
           - no_proxy
@@ -441,8 +446,6 @@ services:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - docker-in-docker:/certs/client
-      ports:
-        - "${PHP_FPM_XDEBUG_PORT}:9003"
       expose:
         - "9000"
       extra_hosts:
@@ -635,6 +638,7 @@ services:
           - PHP_UPSTREAM_TIMEOUT=${APACHE_PHP_UPSTREAM_TIMEOUT}
           - DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT}
           - APACHE_INSTALL_HTTP2=${APACHE_INSTALL_HTTP2}
+          - APACHE_FOR_MAC_M1=${APACHE_FOR_MAC_M1}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - ${APACHE_HOST_LOG_PATH}:/var/log/apache2
@@ -729,7 +733,7 @@ services:
         - SA_PASSWORD=${MSSQL_PASSWORD}
         - ACCEPT_EULA=Y
       volumes:
-        - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
+        - mssql:/var/opt/mssql
       ports:
         - "${MSSQL_PORT}:1433"
       networks:
@@ -2230,3 +2234,17 @@ services:
         - ${TARANTOOL_ADMIN_PORT}:80
       networks:
         - backend
+
+  ### onedev ####################################################
+    onedev:
+      image: 1dev/server
+      ports:
+        - "${ONEDEV_HTTP_PORT}:6610"
+        - "${ONEDEV_SSH_PORT}:6611"
+      volumes:
+        - ${DATA_PATH_HOST}/onedev:/opt/onedev
+        - /var/run/docker.sock:/var/run/docker.sock
+      networks:
+        - frontend
+        - backend
+      restart: always
