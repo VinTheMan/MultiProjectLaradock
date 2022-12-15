@@ -723,7 +723,7 @@ services:
 
 ### MSSQL ################################################
     mssql:
-      image: laradock_mssql:latest
+      # image: laradock_mssql:latest
       build:
         context: ./mssql
       environment:
@@ -733,7 +733,7 @@ services:
         - SA_PASSWORD=${MSSQL_PASSWORD}
         - ACCEPT_EULA=Y
       volumes:
-        - mssql:/var/opt/mssql
+        - ${DATA_PATH_HOST}/mssql:/var/opt/mssql
       ports:
         - "${MSSQL_PORT}:1433"
       networks:
