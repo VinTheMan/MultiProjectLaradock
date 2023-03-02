@@ -17,7 +17,7 @@
 ## When in production server
 
 cp docker-compose-server.yml /home/it/PEGA_Projects/MultiProjectLaradock/docker-compose.yml
-
+s
 ## Docker compose commands
 
 docker compose up nginx workspace smt_workspace redis mssql meilisearch <br />
