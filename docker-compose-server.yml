@@ -567,7 +567,7 @@ services:
 
 ### NGINX Server #########################################
     nginx:
-      image: laradock_nginx:latest
+      image: laradock-nginx:latest
       build:
         context: ./nginx
         args:
