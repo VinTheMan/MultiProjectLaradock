@@ -33,6 +33,9 @@ RUN touch /var/log/messages
 # Copy 'logrotate' config file
 COPY logrotate/nginx /etc/logrotate.d/
 
+# Copy the ntlm module to container
+COPY /modules/nginx-ntlm/ngx_http_upstream_ntlm_module.so /etc/nginx/modules/ngx_http_upstream_ntlm_module.so
+
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
     && rm /etc/nginx/conf.d/default.conf
