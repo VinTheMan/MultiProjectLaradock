@@ -23,8 +23,8 @@ docker compose up nginx workspace redis mssql meilisearch <br />
 docker compose up -d nginx workspace redis mssql meilisearch <br />
 docker-compose logs --follow <br />
 
-## Syncing a forked project (update to the newest laradock)
+## Syncing a forked project (update to the latest laradock)
 
-git remote add upstream https://github.com/laradock/laradock.git
-git fetch upstream
-git rebase upstream/master
+git remote add upstream https://github.com/laradock/laradock.git <br />
+git fetch upstream <br />
+git rebase upstream/master <br />
