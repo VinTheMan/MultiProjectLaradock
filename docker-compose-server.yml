@@ -208,11 +208,11 @@ services:
       links:
         - docker-in-docker
 
-### SMT Workspace Utilities ##################################
-    smt_workspace:
-      image: laradock_smt_workspace:latest
+### HQ Component Management Utilities ##################################
+    hq_component_workspace:
+      image: laradock_hq_component_workspace:latest
       build:
-        context: ./smt_workspace
+        context: ./hq_component_workspace
         args:
           - CHANGE_SOURCE=${CHANGE_SOURCE}
           - SHELL_OH_MY_ZSH=${SHELL_OH_MY_ZSH}
@@ -330,7 +330,7 @@ services:
           - https_proxy
           - no_proxy
       volumes:
-        - ../SMTStockInWeb:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - ../Component-Management-Website:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - docker-in-docker:/certs/client
         - ./php-worker/supervisord.d:/etc/supervisord.d
       extra_hosts:
