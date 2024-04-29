@@ -59,7 +59,7 @@ services:
 
 ### Workspace Utilities ##################################
     workspace:
-      image: laradock_workspace:latest
+      image: laradock-workspace:latest
       build:
         context: ./workspace
         args:
@@ -355,7 +355,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
-      image: laradock_php-fpm:latest
+      image: laradock-php-fpm:latest
       build:
         context: ./php-fpm
         args:
@@ -686,7 +686,7 @@ services:
 
 ### MySQL ################################################
     mysql:
-      image: laradock_mysql:latest
+      image: laradock-mysql:latest
       build:
         context: ./mysql
         args:
@@ -725,7 +725,7 @@ services:
 
 ### MSSQL ################################################
     mssql:
-      image: laradock_mssql:latest
+      image: laradock-mssql:latest
       build:
         context: ./mssql
       environment:

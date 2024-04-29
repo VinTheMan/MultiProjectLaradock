@@ -59,7 +59,7 @@ services:
 
 ### Workspace Utilities ##################################
     workspace:
-      # image: 172.22.255.22:5000/consumeMat_workspace:latest
+      # image: 172.22.255.22:5000/laradock-workspace:latest
       build:
         context: ./workspace
         args:
@@ -355,7 +355,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
-      # image: 172.22.255.22:5000/laradock_php-fpm:latest
+      # image: 172.22.255.22:5000/laradock-php-fpm:latest
       build:
         context: ./php-fpm
         args:
@@ -567,7 +567,7 @@ services:
 
 ### NGINX Server #########################################
     nginx:
-      # image: 172.22.255.22:5000/laradock_nginx:latest
+      # image: 172.22.255.22:5000/laradock-nginx:latest
       build:
         context: ./nginx
         args:
@@ -686,7 +686,7 @@ services:
 
 ### MySQL ################################################
     mysql:
-      # image: 172.22.255.22:5000/laradock_mysql:latest
+      # image: 172.22.255.22:5000/laradock-mysql:latest
       build:
         context: ./mysql
         args:
@@ -1697,7 +1697,6 @@ services:
 
 ### Docker-in-Docker ################################################
     docker-in-docker:
-      # image: 172.22.255.22:5000/docker_in_docker:latest
       image: docker:20.10-dind
       environment:
         DOCKER_TLS_SAN: DNS:docker-in-docker
