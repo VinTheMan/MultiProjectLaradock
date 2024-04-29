@@ -895,7 +895,7 @@ services:
 
   ### Redis ################################################
     redis:
-      # image: 172.22.255.22:5000/laradock_redis:latest
+      # image: 172.22.255.22:5000/laradock-redis:latest
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
