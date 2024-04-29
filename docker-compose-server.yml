@@ -896,7 +896,7 @@ services:
 
   ### Redis ################################################
     redis:
-      image: laradock_redis:latest
+      image: laradock-redis:latest
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
