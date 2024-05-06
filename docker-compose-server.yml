@@ -899,7 +899,7 @@ services:
       image: laradock-redis:latest
       build: ./redis
       volumes:
-        - ${DATA_PATH_HOST}/redis:/data
+        - ./redis/data:/data
       command: --requirepass ${REDIS_PASSWORD}
       ports:
         - "${REDIS_PORT}:6379"
