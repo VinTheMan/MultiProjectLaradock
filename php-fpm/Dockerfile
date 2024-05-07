@@ -110,9 +110,6 @@ RUN set -xe; \
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
 
-RUN pecl install redis && \
-    docker-php-ext-enable redis
-
 RUN set -ex; \
         docker-php-source extract; \
         { \

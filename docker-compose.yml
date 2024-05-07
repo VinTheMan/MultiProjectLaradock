@@ -780,7 +780,7 @@ services:
         - SA_PASSWORD=${MSSQL_PASSWORD}
         - ACCEPT_EULA=Y
       volumes:
-        - mssql:/var/opt/mssql
+        - ./mssql/db_data:/var/opt/mssql
       ports:
         - "${MSSQL_PORT}:1433"
       networks:
