@@ -334,8 +334,8 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
   # https://xdebug.org/docs/compat
   apt-get install -yqq pkg-config php-xml php${LARADOCK_PHP_VERSION}-xml && \
   if [ $(php -r "echo PHP_MAJOR_VERSION;") = "8" ] || { [ $(php -r "echo PHP_MAJOR_VERSION;") = "7" ] && { [ $(php -r "echo PHP_MINOR_VERSION;") = "4" ] || [ $(php -r "echo PHP_MINOR_VERSION;") = "3" ] ;} ;}; then \
-    if [ ${LARADOCK_PHP_VERSION} = "8.2" ]; then \
-      pecl install xdebug-3.2.0; \
+    if [ ${LARADOCK_PHP_VERSION} = "8.4" ]; then \
+      pecl install xdebug-3.4.0; \
     else \
       pecl install xdebug-3.1.4; \
     fi; \
