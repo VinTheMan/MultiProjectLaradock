@@ -59,6 +59,7 @@ services:
     workspace:
       image: laradock-workspace:latest
       restart: always
+      # image: 172.22.255.22:5000/consumeMat_workspace:latest
       build:
         context: ./workspace
         args:
@@ -104,6 +105,7 @@ services:
           - INSTALL_NPM_BOWER=${WORKSPACE_INSTALL_NPM_BOWER}
           - INSTALL_NPM_VUE_CLI=${WORKSPACE_INSTALL_NPM_VUE_CLI}
           - INSTALL_NPM_ANGULAR_CLI=${WORKSPACE_INSTALL_NPM_ANGULAR_CLI}
+          - INSTALL_NPM_CHECK_UPDATES_CLI=${WORKSPACE_INSTALL_NPM_CHECK_UPDATES_CLI}
           - INSTALL_DRUSH=${WORKSPACE_INSTALL_DRUSH}
           - INSTALL_WP_CLI=${WORKSPACE_INSTALL_WP_CLI}
           - INSTALL_DRUPAL_CONSOLE=${WORKSPACE_INSTALL_DRUPAL_CONSOLE}
@@ -111,6 +113,7 @@ services:
           - INSTALL_OCI8=${WORKSPACE_INSTALL_OCI8}
           - INSTALL_V8JS=${WORKSPACE_INSTALL_V8JS}
           - COMPOSER_GLOBAL_INSTALL=${WORKSPACE_COMPOSER_GLOBAL_INSTALL}
+          - WORKSPACE_ALLOW_RELEASE_INFO_CHANGE=${WORKSPACE_ALLOW_RELEASE_INFO_CHANGE}
           - COMPOSER_VERSION=${WORKSPACE_COMPOSER_VERSION}
           - COMPOSER_AUTH_JSON=${WORKSPACE_COMPOSER_AUTH_JSON}
           - COMPOSER_REPO_PACKAGIST=${WORKSPACE_COMPOSER_REPO_PACKAGIST}
@@ -130,12 +133,14 @@ services:
           - INSTALL_TERRAFORM=${WORKSPACE_INSTALL_TERRAFORM}
           - INSTALL_DUSK_DEPS=${WORKSPACE_INSTALL_DUSK_DEPS}
           - INSTALL_PG_CLIENT=${WORKSPACE_INSTALL_PG_CLIENT}
+          - PG_CLIENT_VERSION=${POSTGRES_CLIENT_VERSION}
           - INSTALL_PHALCON=${WORKSPACE_INSTALL_PHALCON}
           - INSTALL_SWOOLE=${WORKSPACE_INSTALL_SWOOLE}
           - INSTALL_TAINT=${WORKSPACE_INSTALL_TAINT}
           - INSTALL_LIBPNG=${WORKSPACE_INSTALL_LIBPNG}
           - INSTALL_GRAPHVIZ=${WORKSPACE_INSTALL_GRAPHVIZ}
           - INSTALL_IONCUBE=${WORKSPACE_INSTALL_IONCUBE}
+          - INSTALL_APCU=${WORKSPACE_INSTALL_APCU}
           - INSTALL_MYSQL_CLIENT=${WORKSPACE_INSTALL_MYSQL_CLIENT}
           - INSTALL_PING=${WORKSPACE_INSTALL_PING}
           - INSTALL_SSHPASS=${WORKSPACE_INSTALL_SSHPASS}
@@ -176,6 +181,13 @@ services:
           - INSTALL_MEMCACHED=${WORKSPACE_INSTALL_MEMCACHED}
           - INSTALL_EVENT=${WORKSPACE_INSTALL_EVENT}
           - INSTALL_DNSUTILS=${WORKSPACE_INSTALL_DNSUTILS}
+          - INSTALL_POPPLER_UTILS=${WORKSPACE_INSTALL_POPPLER_UTILS}
+          - INSTALL_JDK=${WORKSPACE_INSTALL_JDK}
+          - INSTALL_GITHUB_CLI=${WORKSPACE_INSTALL_GITHUB_CLI}
+          - ORACLE_INSTANT_CLIENT_MIRROR=${ORACLE_INSTANT_CLIENT_MIRROR}
+          - ORACLE_INSTANT_CLIENT_ARCH=${ORACLE_INSTANT_CLIENT_ARCH}
+          - ORACLE_INSTANT_CLIENT_MAJOR=${ORACLE_INSTANT_CLIENT_MAJOR}
+          - ORACLE_INSTANT_CLIENT_MINOR=${ORACLE_INSTANT_CLIENT_MINOR}
           - http_proxy
           - https_proxy
           - no_proxy
@@ -354,6 +366,7 @@ services:
 
 ### PHP-FPM ##############################################
     php-fpm:
+      restart: always
       image: laradock-php-fpm:latest
       build:
         context: ./php-fpm
@@ -392,6 +405,7 @@ services:
           - INSTALL_MYSQLI=${PHP_FPM_INSTALL_MYSQLI}
           - INSTALL_PGSQL=${PHP_FPM_INSTALL_PGSQL}
           - INSTALL_PG_CLIENT=${PHP_FPM_INSTALL_PG_CLIENT}
+          - PG_CLIENT_VERSION=${POSTGRES_CLIENT_VERSION}
           - INSTALL_POSTGIS=${PHP_FPM_INSTALL_POSTGIS}
           - INSTALL_INTL=${PHP_FPM_INSTALL_INTL}
           - INSTALL_GHOSTSCRIPT=${PHP_FPM_INSTALL_GHOSTSCRIPT}
@@ -420,7 +434,7 @@ services:
           - INSTALL_FFMPEG=${PHP_FPM_FFMPEG}
           - INSTALL_AUDIOWAVEFORM=${PHP_FPM_AUDIOWAVEFORM}
           - INSTALL_WKHTMLTOPDF=${PHP_FPM_INSTALL_WKHTMLTOPDF}
-          - WKHTMLTOPDF_VERSION=${WORKSPACE_WKHTMLTOPDF_VERSION}
+          - WKHTMLTOPDF_VERSION=${PHP_FPM_WKHTMLTOPDF_VERSION}
           - INSTALL_XHPROF=${PHP_FPM_INSTALL_XHPROF}
           - INSTALL_XMLRPC=${PHP_FPM_INSTALL_XMLRPC}
           - INSTALL_PHPDECIMAL=${PHP_FPM_INSTALL_PHPDECIMAL}
@@ -428,17 +442,23 @@ services:
           - INSTALL_SSDB=${PHP_FPM_INSTALL_SSDB}
           - INSTALL_TRADER=${PHP_FPM_INSTALL_TRADER}
           - INSTALL_EVENT=${PHP_FPM_INSTALL_EVENT}
+          - LEGACY_OPENSSL=${PHP_LEGACY_OPENSSL}
           - DOWNGRADE_OPENSSL_TLS_AND_SECLEVEL=${PHP_DOWNGRADE_OPENSSL_TLS_AND_SECLEVEL}
           - DOWNGRADE_OPENSSL_TLS_VERSION=${PHP_DOWNGRADE_OPENSSL_TLS_VERSION}
           - PUID=${PHP_FPM_PUID}
           - PGID=${PHP_FPM_PGID}
           - IMAGEMAGICK_VERSION=${PHP_FPM_IMAGEMAGICK_VERSION}
           - LOCALE=${PHP_FPM_DEFAULT_LOCALE}
-          - PHP_FPM_NEW_RELIC=${PHP_FPM_NEW_RELIC}
-          - PHP_FPM_NEW_RELIC_KEY=${PHP_FPM_NEW_RELIC_KEY}
-          - PHP_FPM_NEW_RELIC_APP_NAME=${PHP_FPM_NEW_RELIC_APP_NAME}
+          - NEW_RELIC=${PHP_FPM_NEW_RELIC}
+          - NEW_RELIC_KEY=${PHP_FPM_NEW_RELIC_KEY}
+          - NEW_RELIC_APP_NAME=${PHP_FPM_NEW_RELIC_APP_NAME}
           - INSTALL_DOCKER_CLIENT=${PHP_FPM_INSTALL_DOCKER_CLIENT}
           - INSTALL_DNSUTILS=${PHP_FPM_INSTALL_DNSUTILS}
+          - INSTALL_POPPLER_UTILS=${PHP_FPM_INSTALL_POPPLER_UTILS}
+          - ORACLE_INSTANT_CLIENT_MIRROR=${ORACLE_INSTANT_CLIENT_MIRROR}
+          - ORACLE_INSTANT_CLIENT_ARCH=${ORACLE_INSTANT_CLIENT_ARCH}
+          - ORACLE_INSTANT_CLIENT_MAJOR=${ORACLE_INSTANT_CLIENT_MAJOR}
+          - ORACLE_INSTANT_CLIENT_MINOR=${ORACLE_INSTANT_CLIENT_MINOR}
           - http_proxy
           - https_proxy
           - no_proxy
@@ -457,7 +477,8 @@ services:
         - DOCKER_TLS_CERTDIR=/certs
         - DOCKER_CERT_PATH=/certs/client
         - FAKETIME=${PHP_FPM_FAKETIME}
-        - TZ=Asia/Taipei
+        - TZ=${WORKSPACE_TIMEZONE}
+
       depends_on:
         - workspace
       networks:
@@ -467,12 +488,14 @@ services:
 
 ### PHP Worker ############################################
     php-worker:
+      restart: always
       build:
         context: ./php-worker
         args:
           - CHANGE_SOURCE=${CHANGE_SOURCE}
           - LARADOCK_PHP_VERSION=${PHP_VERSION}
           - PHALCON_VERSION=${PHALCON_VERSION}
+          - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
           - INSTALL_BZ2=${PHP_WORKER_INSTALL_BZ2}
           - INSTALL_GD=${PHP_WORKER_INSTALL_GD}
           - INSTALL_IMAGEMAGICK=${PHP_WORKER_INSTALL_IMAGEMAGICK}
@@ -486,6 +509,7 @@ services:
           - INSTALL_OCI8=${PHP_WORKER_INSTALL_OCI8}
           - INSTALL_MSSQL=${PHP_WORKER_INSTALL_MSSQL}
           - INSTALL_PHALCON=${PHP_WORKER_INSTALL_PHALCON}
+          - INSTALL_APCU=${PHP_WORKER_INSTALL_APCU}
           - INSTALL_XLSWRITER=${PHP_WORKER_INSTALL_XLSWRITER}
           - INSTALL_SOAP=${PHP_WORKER_INSTALL_SOAP}
           - INSTALL_ZIP_ARCHIVE=${PHP_WORKER_INSTALL_ZIP_ARCHIVE}
@@ -504,20 +528,28 @@ services:
           - INSTALL_SSDB=${PHP_WORKER_INSTALL_SSDB}
           - INSTALL_EVENT=${PHP_WORKER_INSTALL_EVENT}
           - INSTALL_INTL=${PHP_WORKER_INSTALL_INTL}
+          - INSTALL_POPPLER_UTILS=${PHP_WORKER_INSTALL_POPPLER_UTILS}
           - PUID=${PHP_WORKER_PUID}
           - PGID=${PHP_WORKER_PGID}
           - IMAGEMAGICK_VERSION=${PHP_WORKER_IMAGEMAGICK_VERSION}
+          - ORACLE_INSTANT_CLIENT_MIRROR=${ORACLE_INSTANT_CLIENT_MIRROR}
+          - ORACLE_INSTANT_CLIENT_ARCH=${ORACLE_INSTANT_CLIENT_ARCH}
+          - ORACLE_INSTANT_CLIENT_MAJOR=${ORACLE_INSTANT_CLIENT_MAJOR}
+          - ORACLE_INSTANT_CLIENT_MINOR=${ORACLE_INSTANT_CLIENT_MINOR}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - ./php-worker/supervisord.d:/etc/supervisord.d
       depends_on:
         - workspace
+      environment:
+          - TZ=${WORKSPACE_TIMEZONE}
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
       networks:
         - backend
 ### Laravel Horizon ############################################
     laravel-horizon:
+      restart: always
       build:
         context: ./laravel-horizon
         args:
@@ -540,6 +572,7 @@ services:
           - INSTALL_MONGO=${LARAVEL_HORIZON_INSTALL_MONGO}
           - INSTALL_FFMPEG=${LARAVEL_HORIZON_INSTALL_FFMPEG}
           - INSTALL_AUDIOWAVEFORM=${LARAVEL_HORIZON_INSTALL_AUDIOWAVEFORM}
+          - INSTALL_POPPLER_UTILS=${LARAVEL_HORIZON_INSTALL_POPPLER_UTILS}
           - PUID=${LARAVEL_HORIZON_PUID}
           - PGID=${LARAVEL_HORIZON_PGID}
           - IMAGEMAGICK_VERSION=${LARAVEL_HORIZON_IMAGEMAGICK_VERSION}
@@ -557,6 +590,11 @@ services:
     soketi:
       build:
         context: ./soketi
+        args:
+          - NODE_VERSION=${SOKETI_NODE_VERSION}
+          - BASE_IMAGE_TAG_PREFIX=${SOKETI_BASE_IMAGE_TAG_PREFIX}
+      volumes:
+        - ./soketi/config.json:/app/bin/config.json:ro
       ports:
         - "${SOKETI_PORT}:6001"
         - "${SOKETI_METRICS_SERVER_PORT}:9601"
@@ -566,8 +604,8 @@ services:
 
 ### NGINX Server #########################################
     nginx:
-      image: laradock-nginx:latest
       restart: always
+      image: laradock-nginx:latest
       build:
         context: ./nginx
         args:
@@ -592,9 +630,12 @@ services:
       networks:
         - frontend
         - backend
+      extra_hosts:
+        - "host.docker.internal:host-gateway"  
 
 ### OpenResty Server #########################################
     openresty:
+      restart: always
       build:
         context: ./openresty
         args:
@@ -632,6 +673,7 @@ services:
 
 ### Apache Server ########################################
     apache2:
+      restart: always
       build:
         context: ./apache2
         args:
@@ -657,6 +699,7 @@ services:
 
 ### HHVM #################################################
     hhvm:
+      restart: always
       build: ./hhvm
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
@@ -670,6 +713,7 @@ services:
 
 ### Minio ################################################
     minio:
+      restart: always
       build: ./minio
       volumes:
         - ${DATA_PATH_HOST}/minio/data:/export
@@ -686,6 +730,7 @@ services:
 
 ### MySQL ################################################
     mysql:
+      restart: always
       image: laradock-mysql:latest
       build:
         context: ./mysql
@@ -708,6 +753,7 @@ services:
 
 ### Percona ################################################
     percona:
+      restart: always
       build:
         context: ./percona
       environment:
@@ -725,8 +771,8 @@ services:
 
 ### MSSQL ################################################
     mssql:
-      image: laradock-mssql:latest
       restart: always
+      image: laradock-mssql:latest
       build:
         context: ./mssql
       environment:
@@ -744,6 +790,7 @@ services:
 
 ### MariaDB ##############################################
     mariadb:
+      restart: always
       build:
         context: ./mariadb
         args:
@@ -767,6 +814,7 @@ services:
 
 ### PostgreSQL ###########################################
     postgres:
+      restart: always
       build:
         context: ./postgres
         args:
@@ -784,6 +832,10 @@ services:
         - GITLAB_POSTGRES_USER=${GITLAB_POSTGRES_USER}
         - GITLAB_POSTGRES_PASSWORD=${GITLAB_POSTGRES_PASSWORD}
         - GITLAB_POSTGRES_DB=${GITLAB_POSTGRES_DB}
+        - KEYCLOAK_POSTGRES_INIT=${KEYCLOAK_POSTGRES_INIT}
+        - KEYCLOAK_POSTGRES_USER=${KEYCLOAK_POSTGRES_USER}
+        - KEYCLOAK_POSTGRES_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+        - KEYCLOAK_POSTGRES_DB=${KEYCLOAK_POSTGRES_DB}
         - JUPYTERHUB_POSTGRES_INIT=${JUPYTERHUB_POSTGRES_INIT}
         - JUPYTERHUB_POSTGRES_USER=${JUPYTERHUB_POSTGRES_USER}
         - JUPYTERHUB_POSTGRES_PASSWORD=${JUPYTERHUB_POSTGRES_PASSWORD}
@@ -798,9 +850,26 @@ services:
         - POSTGRES_CONFLUENCE_PASSWORD=${CONFLUENCE_POSTGRES_PASSWORD}
       networks:
         - backend
+### pgbackups PostgreSQL ###########################################
+    pgbackups:
+      image: prodrigestivill/postgres-backup-local
+      restart: always
+      volumes:
+        - ../backup:/backups
+      links:
+        - postgres
+      environment:
+        - POSTGRES_HOST={POSTGRES_HOST}
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      networks:
+        - backend
+
 
 ### PostgreSQL PostGis ###################################
     postgres-postgis:
+      restart: always
       build:
         context: ./postgres-postgis
         args:
@@ -819,6 +888,7 @@ services:
 
 ### Neo4j ################################################
     neo4j:
+      restart: always
       ports:
           - '7401:7474'
           - '7402:7687'
@@ -842,6 +912,7 @@ services:
 
 ### MongoDB ##############################################
     mongo:
+      restart: always
       build: ./mongo
       ports:
         - "${MONGODB_PORT}:27017"
@@ -856,6 +927,7 @@ services:
 
 ### RethinkDB ##############################################
     rethinkdb:
+      restart: always
       build: ./rethinkdb
       ports:
         - "${RETHINKDB_PORT}:8080"
@@ -897,11 +969,11 @@ services:
 
   ### Redis ################################################
     redis:
-      image: laradock-redis:latest
       restart: always
+      image: laradock-redis:latest
       build: ./redis
       volumes:
-        - ./redis/data:/data
+        - ${DATA_PATH_HOST}/redis:/data
       command: --requirepass ${REDIS_PASSWORD}
       ports:
         - "${REDIS_PORT}:6379"
@@ -910,6 +982,7 @@ services:
 
 ### Redis Cluster ##########################################
     redis-cluster:
+      restart: always
       build: ./redis-cluster
       ports:
         - "${REDIS_CLUSTER_PORT_RANGE}:7000-7005"
@@ -917,6 +990,7 @@ services:
         - backend
 ### SSDB ################################################
     ssdb:
+      restart: always
       build: ./ssdb
       volumes:
         - ${DATA_PATH_HOST}/ssdb:/data
@@ -927,6 +1001,7 @@ services:
 
 ### ZooKeeper #########################################
     zookeeper:
+      restart: always
       build: ./zookeeper
       volumes:
         - ${DATA_PATH_HOST}/zookeeper/data:/data
@@ -938,6 +1013,7 @@ services:
 
 ### Aerospike ##########################################
     aerospike:
+      restart: always
       build: ./aerospike
       volumes:
         - workspace
@@ -956,6 +1032,7 @@ services:
 
 ### Memcached ############################################
     memcached:
+      restart: always
       build: ./memcached
       volumes:
         - ${DATA_PATH_HOST}/memcached:/var/lib/memcached
@@ -968,6 +1045,7 @@ services:
 
 ### Beanstalkd ###########################################
     beanstalkd:
+      restart: always
       build: ./beanstalkd
       ports:
         - "${BEANSTALKD_HOST_PORT}:11300"
@@ -979,6 +1057,7 @@ services:
 
 ### SQS #############################################
     sqs:
+      restart: always
       build: ./sqs
       ports:
         - "${SQS_NODE_HOST_PORT}:9324"
@@ -993,6 +1072,7 @@ services:
 
 ### RabbitMQ #############################################
     rabbitmq:
+      restart: always
       build: ./rabbitmq
       ports:
         - "${RABBITMQ_NODE_HOST_PORT}:5672"
@@ -1012,6 +1092,7 @@ services:
 
 ### Mercure #############################################
     mercure:
+      restart: always
       build: ./mercure
       ports:
         - "${MERCURE_NODE_HOST_HTTP_PORT}:80"
@@ -1030,6 +1111,7 @@ services:
 
 ### Cassandra ############################################
     cassandra:
+      restart: always
       build: ./cassandra
       ports:
         - "${CASSANDRA_TRANSPORT_PORT_NUMBER}:7000"
@@ -1062,6 +1144,7 @@ services:
 
 ### Gearman ############################################
     gearman:
+      restart: always
       build: ./gearman
       ports:
         - "${GEARMAN_PORT}:4730"
@@ -1095,6 +1178,7 @@ services:
 
 ### Beanstalkd Console ###################################
     beanstalkd-console:
+      restart: always
       build: ./beanstalkd-console
       ports:
         - "${BEANSTALKD_CONSOLE_HOST_PORT}:2080"
@@ -1105,6 +1189,7 @@ services:
 
 ### Caddy Server #########################################
     caddy:
+      restart: always
       build: ./caddy
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
@@ -1122,6 +1207,7 @@ services:
 
 ### phpMyAdmin ###########################################
     phpmyadmin:
+      restart: always
       build: ./phpmyadmin
       environment:
         - PMA_ARBITRARY=1
@@ -1141,6 +1227,7 @@ services:
 
 ### Adminer ###########################################
     adminer:
+      restart: always
       build:
         context: ./adminer
         args:
@@ -1151,14 +1238,15 @@ services:
           - ADMINER_DEFAULT_SERVER=${ADM_DEFAULT_SERVER}
       ports:
         - "${ADM_PORT}:8080"
-      depends_on:
-        - php-fpm
+      # depends_on:
+      #   - php-fpm
       networks:
         - frontend
         - backend
 
 ### pgAdmin ##############################################
     pgadmin:
+      restart: always
       image: dpage/pgadmin4:latest
       environment:
         - "PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}"
@@ -1178,15 +1266,18 @@ services:
       image: getmeili/meilisearch:latest
       restart: always
       volumes:
-        - ./meilisearch:/data.ms
+        - ${DATA_PATH_HOST}/meilisearch:/data.ms
       ports:
         - "${MEILISEARCH_HOST_PORT}:7700"
+      environment:
+        - MEILI_MASTER_KEY=${MEILISEARCH_KEY}
       networks:
         - frontend
         - backend
 
 ### ElasticSearch ########################################
     elasticsearch:
+      restart: always
       build:
         context: ./elasticsearch
         args:
@@ -1199,6 +1290,7 @@ services:
         - bootstrap.memory_lock=true
         - xpack.security.enabled=false
         - xpack.security.transport.ssl.enabled=false
+        - indices.id_field_data.enabled=true
         - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
         - cluster.initial_master_nodes=laradock-node
       ulimits:
@@ -1219,6 +1311,7 @@ services:
 
 ### Logstash ##############################################
     logstash:
+      restart: always
       build:
         context: ./logstash
         args:
@@ -1240,6 +1333,7 @@ services:
 
 ### Kibana ##############################################
     kibana:
+      restart: always
       build:
         context: ./kibana
         args:
@@ -1254,6 +1348,7 @@ services:
 
 ### Dejavu ##############################################
     dejavu:
+      restart: always
       build:
         context: ./dejavu
       ports:
@@ -1279,6 +1374,7 @@ services:
 
 ### MailCatcher ################################################
     mailcatcher:
+      restart: always
       build: ./mailcatcher
       ports:
         - "1025:1025"
@@ -1289,6 +1385,7 @@ services:
 
 ### Mailhog ################################################
     mailhog:
+      restart: always
       build: ./mailhog
       ports:
         - "1025:1025"
@@ -1299,6 +1396,7 @@ services:
 
 ### MailDev ##############################################
     maildev:
+      restart: always
       build: ./maildev
       ports:
         - "${MAILDEV_HTTP_PORT}:80"
@@ -1307,8 +1405,20 @@ services:
         - frontend
         - backend
 
+### Mailpit ##############################################
+    mailpit:
+      restart: always
+      build: ./mailpit
+      ports:
+        - "${MAILPIT_HTTP_PORT}:8025"
+        - "${MAILPIT_SMTP_PORT}:1025"
+      networks:
+        - frontend
+        - backend
+
 ### Selenium ###############################################
     selenium:
+      restart: always
       build: ./selenium
       ports:
         - "${SELENIUM_PORT}:4444"
@@ -1319,6 +1429,7 @@ services:
 
 ### Varnish ##########################################
     proxy:
+      restart: always
       container_name: proxy
       build: ./varnish
       expose:
@@ -1360,6 +1471,7 @@ services:
 
 ### HAProxy ####################################
     haproxy:
+      restart: always
       build: ./haproxy
       ports:
         - "${HAPROXY_HOST_HTTP_PORT}:8085"
@@ -1371,6 +1483,7 @@ services:
 
 ### Jenkins ###################################################
     jenkins:
+      restart: always
       build: ./jenkins
       environment:
         JAVA_OPTS: "-Djava.awt.headless=true"
@@ -1387,6 +1500,7 @@ services:
 
 ### Grafana ################################################
     grafana:
+      restart: always
       build:
         context: ./grafana
       volumes:
@@ -1398,6 +1512,7 @@ services:
 
 ### Graylog #######################################
     graylog:
+      restart: always
       build: ./graylog
       environment:
         - GRAYLOG_PASSWORD_SECRET=${GRAYLOG_PASSWORD}
@@ -1428,6 +1543,7 @@ services:
 
 ### Laravel Echo Server #######################################
     laravel-echo-server:
+      restart: always
       build:
         context: ./laravel-echo-server
         args:
@@ -1444,6 +1560,7 @@ services:
 
 ### Solr ################################################
     solr:
+      restart: always
       build:
         context: ./solr
         args:
@@ -1459,6 +1576,7 @@ services:
 
 ### Thumbor #########################################
     thumbor:
+      restart: always
       build: ./thumbor
       volumes:
         - ${DATA_PATH_HOST}/thumbor/data:/data
@@ -1575,6 +1693,7 @@ services:
 
 ### AWS EB-CLI ################################################
     aws:
+      restart: always
       build:
         context: ./aws-eb-cli
       volumes:
@@ -1585,6 +1704,7 @@ services:
 
 ### Portainer ################################################
     portainer:
+      restart: always
       build:
         context: ./portainer
       volumes:
@@ -1646,6 +1766,7 @@ services:
 
 ### JupyterHub #########################################
     jupyterhub:
+      restart: always
       build:
         context: ./jupyterhub
       depends_on:
@@ -1681,6 +1802,7 @@ services:
 
 ### IPython #########################################
     ipython-controller:
+      restart: always
       build:
         context: ./ipython
         dockerfile: Dockerfile.controller
@@ -1701,6 +1823,8 @@ services:
 
 ### Docker-in-Docker ################################################
     docker-in-docker:
+      restart: always
+      # image: 172.22.255.22:5000/docker_in_docker:latest
       image: docker:20.10-dind
       environment:
         DOCKER_TLS_SAN: DNS:docker-in-docker
@@ -1715,6 +1839,7 @@ services:
 
 ### NetData ################################################
     netdata:
+      restart: always
       image: netdata/netdata:latest
       cap_add:
         - SYS_PTRACE
@@ -1729,6 +1854,7 @@ services:
 
 ### REDISWEBUI ################################################
     redis-webui:
+      restart: always
       build:
         context: ./redis-webui
       environment:
@@ -1746,6 +1872,7 @@ services:
 
 ### MongoWebUI ################################################
     mongo-webui:
+      restart: always
       build:
         context: ./mongo-webui
       environment:
@@ -1763,6 +1890,7 @@ services:
 
 ### Metabase #################################################
     metabase:
+      restart: always
       image: metabase/metabase:latest
       environment:
         - MB_DB_FILE=/metabase-data/${METABASE_DB_FILE}
@@ -2255,3 +2383,24 @@ services:
         - frontend
         - backend
       restart: always
+  
+  ### keycloak ##################################################
+    keycloak:
+      image: bitnami/keycloak:${KEYCLOAK_VERSION}
+      ports:
+        - "${KEYCLOAK_HTTP_PORT}:${KEYCLOAK_HTTP_PORT}"
+      environment:
+        - KEYCLOAK_HTTP_PORT=${KEYCLOAK_HTTP_PORT}
+        - KEYCLOAK_CREATE_ADMIN_USER=${KEYCLOAK_CREATE_ADMIN_USER}
+        - KEYCLOAK_ADMIN_USER=${KEYCLOAK_ADMIN_USER}
+        - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+        - KEYCLOAK_DATABASE_HOST=${KEYCLOAK_POSTGRES_HOST}
+        - KEYCLOAK_DATABASE_PORT=${POSTGRES_PORT}
+        - KEYCLOAK_DATABASE_NAME=${KEYCLOAK_POSTGRES_DB}
+        - KEYCLOAK_DATABASE_USER=${KEYCLOAK_POSTGRES_USER}
+        - KEYCLOAK_DATABASE_PASSWORD=${KEYCLOAK_POSTGRES_PASSWORD}
+      depends_on:
+        - postgres
+      networks:
+        - frontend
+        - backend
