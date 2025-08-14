@@ -57,7 +57,7 @@ services:
 
 ### Workspace Utilities ##################################
     workspace:
-      image: laradock-workspace:latest
+      image: laradock_workspace:latest
       restart: always
       # image: 172.22.255.22:5000/consumeMat_workspace:latest
       build:
@@ -367,7 +367,7 @@ services:
 ### PHP-FPM ##############################################
     php-fpm:
       restart: always
-      image: laradock-php-fpm:latest
+      image: laradock_php-fpm:latest
       build:
         context: ./php-fpm
         args:
@@ -605,7 +605,7 @@ services:
 ### NGINX Server #########################################
     nginx:
       restart: always
-      image: laradock-nginx:latest
+      image: laradock_nginx:latest
       build:
         context: ./nginx
         args:
@@ -731,7 +731,7 @@ services:
 ### MySQL ################################################
     mysql:
       restart: always
-      image: laradock-mysql:latest
+      image: laradock_mysql:latest
       build:
         context: ./mysql
         args:
@@ -772,7 +772,7 @@ services:
 ### MSSQL ################################################
     mssql:
       restart: always
-      image: laradock-mssql:latest
+      image: laradock_mssql:latest
       build:
         context: ./mssql
       environment:
@@ -970,7 +970,7 @@ services:
   ### Redis ################################################
     redis:
       restart: always
-      image: laradock-redis:latest
+      image: laradock_redis:latest
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
